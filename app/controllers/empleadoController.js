@@ -46,4 +46,13 @@ const crearEmpleado = async (req, res) => {
     }
 };
 
-module.exports = { crearEmpleado };
+const getEmpleados = async (req, res) => {
+  try {
+    const empleados = await Empleado.find();
+    res.json(empleados);
+  } catch (err) {
+    res.status(500).send('Error al obtener los empleados');
+  }
+};
+
+module.exports = { crearEmpleado,getEmpleados };

@@ -1,6 +1,6 @@
 // routes/empleadoRoutes.js
 const express = require('express');
-const { crearEmpleado,getEmpleados } = require('../controllers/empleadoController');
+const { crearEmpleado,getEmpleados, updateRol,deleteEmpleado} = require('../controllers/empleadoController');
 const empleadoController = require('../controllers/empleadosController');
 const router = express.Router();
 
@@ -8,6 +8,11 @@ const router = express.Router();
 router.post('/empleados', crearEmpleado);
 router.get('/empleados', getEmpleados);
 
+// Ruta para actualizar el rol (baja temporal)
+router.put('/empleados/:id/rol',updateRol);
+
+// Ruta para eliminar un usuario (baja definitiva)
+router.delete('/empleados/:id', deleteEmpleado);
 
 
 router.get('/ultimo-consecutivo', empleadoController.obtenerUltimoConsecutivo);

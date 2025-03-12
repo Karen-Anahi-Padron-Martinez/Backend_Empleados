@@ -55,4 +55,40 @@ const getEmpleados = async (req, res) => {
   }
 };
 
-module.exports = { crearEmpleado,getEmpleados };
+// Actualizar el rol de un usuario (baja temporal)
+const updateRol = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const empleado = await Empleado.findById(id);
+
+    if (!empleado) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Cambiar el rol a 3 (baja temporal)
+    empleado.rol = 3;
+    await empleado.save();
+    res.json({ message: 'Rol actualizado a baja temporal', empleado });
+  } catch (err) {
+    res.status(500).send('Error al actualizar el rol');
+  }
+};
+
+// Eliminar un usuario (baja definitiva)
+const deleteEmpleado = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const empleado = await Empleado.findByIdAndDelete(id);
+
+    if (!empleado) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (err) {
+    res.status(500).send('Error al eliminar el usuario');
+  }
+};
+
+
+module.exports = { crearEmpleado,getEmpleados,updateRol,deleteEmpleado };

@@ -1,4 +1,5 @@
 // server.js
+require('dotenv').config(); 
 const express = require('express');
 const cors = require('cors');
 const conectarDB = require('./config/db');
@@ -9,7 +10,7 @@ const documentoRouter=require("./app/routes/documentoRoutes");
 const actividadRoutes=require("./app/routes/actividadRoutes");
 const ciudadRoutes= require("./app/routes/ciudadRoutes");
 const parentescoRoutes= require("./app/routes/parentescoRoutes");
-
+const login=require("./app/routes/authRoutes")
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api", documentoRouter);
 app.use("/api", actividadRoutes );
 app.use("/api", ciudadRoutes);
 app.use("/api", parentescoRoutes);
+app.use("/api", login);
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

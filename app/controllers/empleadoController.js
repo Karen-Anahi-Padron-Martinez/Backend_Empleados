@@ -90,5 +90,27 @@ const deleteEmpleado = async (req, res) => {
   }
 };
 
+// Actualizar empleado
+const actualizarEmpleado = async (req, res) => {
+  try {
+    const clave_empleado = req.params.clave_empleado;
 
-module.exports = { crearEmpleado,getEmpleados,updateRol,deleteEmpleado };
+    // Buscar y actualizar el empleado
+    const empleadoActualizado = await Empleado.findOneAndUpdate(
+      { clave_empleado },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!empleadoActualizado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    res.json(empleadoActualizado);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar empleado', error });
+  }
+};
+
+
+module.exports = { crearEmpleado,getEmpleados,updateRol,deleteEmpleado,actualizarEmpleado};

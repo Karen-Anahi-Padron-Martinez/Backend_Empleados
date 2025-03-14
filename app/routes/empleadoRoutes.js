@@ -1,6 +1,6 @@
 // routes/empleadoRoutes.js
 const express = require('express');
-const { crearEmpleado,getEmpleados, updateRol,deleteEmpleado} = require('../controllers/empleadoController');
+const { crearEmpleado,getEmpleados, updateRol,deleteEmpleado,actualizarEmpleado} = require('../controllers/empleadoController');
 const empleadoController = require('../controllers/empleadosController');
 const router = express.Router();
 
@@ -17,5 +17,7 @@ router.delete('/empleados/:id', deleteEmpleado);
 
 router.get('/ultimo-consecutivo', empleadoController.obtenerUltimoConsecutivo);
 
+// Ruta para actualizar un empleado
+router.put('/empleados/actualizar/:clave_empleado', actualizarEmpleado);
 
 module.exports = router;

@@ -73,6 +73,24 @@ const updateRol = async (req, res) => {
     res.status(500).send('Error al actualizar el rol');
   }
 };
+// Actualizar el rol de un usuario (baja temporal)
+const updatRol = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const empleado = await Empleado.findById(id);
+
+    if (!empleado) {
+      return res.status(404).send('Usuario no encontrado');
+    }
+
+    // Cambiar el rol a 2(baja temporal)
+    empleado.rol = 2;
+    await empleado.save();
+    res.json({ message: 'Rol dado de alta', empleado });
+  } catch (err) {
+    res.status(500).send('Error al actualizar el rol');
+  }
+};
 
 // Eliminar un usuario (baja definitiva)
 const deleteEmpleado = async (req, res) => {
@@ -112,5 +130,39 @@ const actualizarEmpleado = async (req, res) => {
   }
 };
 
+// Obtener usuarios con rol 3
+const getUsersWithRole3 = async (req, res) => {
+  try {
+    const users = await Empleado.find({ rol: 3 }); // Filtramos los usuarios con rol 3
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al obtener los usuarios.' });
+  }
+};
 
-module.exports = { crearEmpleado,getEmpleados,updateRol,deleteEmpleado,actualizarEmpleado};
+const obtenerEmpleadoPorClave = async (req, res) => {
+  const { clave_empleado } = req.params;
+  try {
+      const empleado = await Empleado.findOne({ clave_empleado });
+      if (empleado) {
+          res.status(200).json(empleado);
+      } else {
+          res.status(404).send({ error: 'Empleado no encontrado' });
+      }
+  } catch (error) {
+      res.status(500).send({ error: 'Error al obtener el empleado' });
+  }
+};
+
+// Obtener todas las claves y nombres de empleados
+const obtenerEmpleados = async (req, res) => {
+  try {
+      const empleados = await Empleado.find({}, 'clave_empleado nombre');
+      res.json(empleados);
+  } catch (error) {
+      res.status(500).json({ message: 'Error al obtener empleados', error });
+  }
+};
+
+module.exports = { crearEmpleado,updatRol,getEmpleados,updateRol,deleteEmpleado,obtenerEmpleadoPorClave,actualizarEmpleado,getUsersWithRole3,obtenerEmpleados};

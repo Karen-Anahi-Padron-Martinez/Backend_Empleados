@@ -10,8 +10,8 @@ const documentoRouter=require("./app/routes/documentoRoutes");
 const actividadRoutes=require("./app/routes/actividadRoutes");
 const ciudadRoutes= require("./app/routes/ciudadRoutes");
 const parentescoRoutes= require("./app/routes/parentescoRoutes");
-const login=require("./app/routes/authRoutes")
-
+const login=require("./app/routes/authRoutes");
+const cursoRoutes= require("./app/routes/cursoRoutes");
 const app = express();
 
 
@@ -31,6 +31,7 @@ app.use("/api", actividadRoutes );
 app.use("/api", ciudadRoutes);
 app.use("/api", parentescoRoutes);
 app.use("/api", login);
+app.use('/api', cursoRoutes);
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -25,7 +25,7 @@ app.use(cors());
 // Rutas
 app.use('/api', empleadoRoutes);
 app.use('/api', departamentoRoutes);
-app.use("/api",puestoRouter);
+app.use("/api", puestoRouter);
 app.use("/api", documentoRouter);
 app.use("/api", actividadRoutes );
 app.use("/api", ciudadRoutes);

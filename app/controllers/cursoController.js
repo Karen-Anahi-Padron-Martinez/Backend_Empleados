@@ -49,5 +49,21 @@ const registrarCursos = async (req, res) => {
         res.status(500).json({ message: 'Error al registrar los cursos', error });
     }
 };
+const obtenerCursosDeEmpleados = async (req, res) => {
+  try {
+      // Obtener todos los cursos y sus detalles
+      const cursos = await Curso.find({});
 
-module.exports = { crearCurso,registrarCursos};
+      // Verifica si se encontraron cursos
+      if (!cursos || cursos.length === 0) {
+          return res.status(404).json({ message: "No se encontraron cursos de empleados." });
+      }
+
+      // Devuelve la lista de cursos
+      res.status(200).json(cursos);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al obtener los cursos de los empleados', error });
+  }
+};
+module.exports = { crearCurso,registrarCursos,obtenerCursosDeEmpleados};

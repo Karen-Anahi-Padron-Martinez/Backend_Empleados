@@ -34,5 +34,23 @@ const registrarParticipaciones = async (req, res) => {
         res.status(500).json({ message: 'Error al registrar la Participacion', error });
     }
 };
+// Obtener todos los empleados con sus actividades
+const obtenerEmpleadosConCursos = async (req, res) => {
+    try {
+        // Buscar todos los empleados con sus actividades
+        const empleadosConCursos = await Participacion.find({});
 
-module.exports = { registrarParticipaciones};
+        // Verificar si se encontraron empleados
+        if (!empleadosConCursos || empleadosConCursos.length === 0) {
+            return res.status(404).json({ message: "No se encontraron empleados con actividades." });
+        }
+
+        // Devolver los empleados con sus actividades
+        res.status(200).json(empleadosConCursos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener empleados y sus cursos', error });
+    }
+};
+
+module.exports = { registrarParticipaciones,obtenerEmpleadosConCursos};

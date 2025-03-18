@@ -12,6 +12,7 @@ const ciudadRoutes= require("./app/routes/ciudadRoutes");
 const parentescoRoutes= require("./app/routes/parentescoRoutes");
 const login=require("./app/routes/authRoutes");
 const cursoRoutes= require("./app/routes/cursoRoutes");
+const participacionRoutes= require("./app/routes/participacionRoutes");
 const app = express();
 
 
@@ -32,6 +33,7 @@ app.use("/api", ciudadRoutes);
 app.use("/api", parentescoRoutes);
 app.use("/api", login);
 app.use('/api', cursoRoutes);
+app.use("/api", participacionRoutes)
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

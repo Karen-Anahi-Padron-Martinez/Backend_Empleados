@@ -164,5 +164,215 @@ const obtenerEmpleados = async (req, res) => {
       res.status(500).json({ message: 'Error al obtener empleados', error });
   }
 };
+// Función para obtener un empleado por ID
+const obtenerEmpleadoPorId = async (req, res) => {
+  try {
+    const empleado = await Empleado.findById(req.params.id); // Buscar por ID
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+    res.json(empleado); 
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener el empleado', error });
+  }
+};
 
-module.exports = { crearEmpleado,updatRol,getEmpleados,updateRol,deleteEmpleado,obtenerEmpleadoPorClave,actualizarEmpleado,getUsersWithRole3,obtenerEmpleados};
+//--------------------------------------------------------------------------------------------
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------------------------------
+const agregarTelefono = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { telefono } = req.body;
+      
+
+      // Buscar al empleado
+      const empleado = await Empleado.findById(id);
+      if (!empleado) {
+          return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+      }
+
+      // Agregar el nuevo teléfono al arreglo
+      empleado.telefonos.push(telefono);
+      await empleado.save();
+
+      res.json({ mensaje: 'Teléfono agregado correctamente', empleado });
+  } catch (error) {
+      res.status(500).json({ mensaje: 'Error al agregar teléfono', error });
+  }
+};
+
+const actualizarTelefono = async (req, res) => {
+  try {
+    const { id, oldTelefono, newTelefono } = req.params;
+
+    // Buscar al empleado
+    const empleado = await Empleado.findById(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    // Buscar el teléfono y reemplazarlo
+    const index = empleado.telefonos.indexOf(oldTelefono);
+    if (index === -1) {
+      return res.status(404).json({ mensaje: 'Teléfono no encontrado en el empleado' });
+    }
+
+    empleado.telefonos[index] = newTelefono;
+    await empleado.save();
+
+    res.json({ mensaje: 'Teléfono actualizado correctamente', empleado });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar teléfono', error });
+  }
+};
+
+
+const eliminarTelefono = async (req, res) => {
+  try {
+    const { id, telefono } = req.params;
+
+    // Buscar al empleado
+    const empleado = await Empleado.findById(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    // Eliminar el teléfono
+    const index = empleado.telefonos.indexOf(telefono);
+    if (index === -1) {
+      return res.status(404).json({ mensaje: 'Teléfono no encontrado en el empleado' });
+    }
+
+    empleado.telefonos.splice(index, 1);
+    await empleado.save();
+
+    res.json({ mensaje: 'Teléfono eliminado correctamente', empleado });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al eliminar teléfono', error });
+  }
+};
+//-----------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
+const agregarCorreo = async (req, res) => {
+  const { id } = req.params;
+  const { correo } = req.body;
+
+  try {
+    const empleado = await Empleado.findById(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    // Agregar correo al array de correos
+    empleado.correos.push(correo);
+    await empleado.save();
+
+    res.json({ mensaje: 'Correo agregado correctamente', empleado });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al agregar correo', error });
+  }
+};
+
+// Actualizar un correo del empleado
+const actualizarCorreo = async (req, res) => {
+  try {
+    const { id, oldCorreo } = req.params;
+    const { newCorreo } = req.body;
+
+    // Buscar al empleado
+    const empleado = await Empleado.findById(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    // Buscar el correo antiguo en el array y actualizarlo
+    const index = empleado.correos.indexOf(oldCorreo);
+    if (index === -1) {
+      return res.status(404).json({ mensaje: 'Correo no encontrado en el empleado' });
+    }
+
+    // Actualizar el correo
+    empleado.correos[index] = newCorreo;
+    await empleado.save();
+
+    res.json({ mensaje: 'Correo actualizado correctamente', empleado });
+  } catch (error) {
+    console.error('Error al actualizar correo', error);
+    res.status(500).json({ mensaje: 'Error al actualizar correo', error });
+  }
+};
+// Eliminar un correo del empleado
+const eliminarCorreo = async (req, res) => {
+  const { id, correo } = req.params;
+
+  try {
+    const empleado = await Empleado.findById(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    // Eliminar el correo del array
+    const index = empleado.correos.indexOf(correo);
+    if (index === -1) {
+      return res.status(404).json({ mensaje: 'Correo no encontrado' });
+    }
+
+    empleado.correos.splice(index, 1);
+    await empleado.save();
+
+    res.json({ mensaje: 'Correo eliminado correctamente', empleado });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al eliminar correo', error });
+  }
+};
+
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+//Fotografía
+// Actualizar foto del empleado
+// Función para actualizar la foto del empleado
+const actualizarFoto = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { foto } = req.body;  // Recibimos el link de la foto
+
+    // Verificamos si el empleado existe
+    const empleado = await Empleado.findById(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: 'Empleado no encontrado' });
+    }
+
+    // Actualizamos el campo de la foto con el enlace proporcionado
+    empleado.foto = foto;
+    await empleado.save();
+
+    res.json({ mensaje: 'Foto actualizada correctamente', empleado });
+  } catch (error) {
+    console.error('Error al actualizar foto', error);
+    res.status(500).json({ mensaje: 'Error al actualizar foto', error });
+  }
+};
+
+module.exports = { crearEmpleado,
+                    updatRol,getEmpleados,
+                    updateRol,
+                    deleteEmpleado,
+                    obtenerEmpleadoPorClave,
+                    actualizarEmpleado,
+                    getUsersWithRole3,
+                    obtenerEmpleados,
+                    actualizarFoto,
+                    obtenerEmpleadoPorId,
+                    agregarTelefono,
+                    actualizarTelefono,
+                    eliminarTelefono,
+                    agregarCorreo,
+                    actualizarCorreo,
+                    eliminarCorreo };

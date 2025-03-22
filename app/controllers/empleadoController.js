@@ -33,7 +33,7 @@ const crearEmpleado = async (req, res) => {
         departamento: resto.departamento,
         puesto: resto.puesto,
         telefonos: resto.telefonos,
-        correos: correo,
+        correos: resto.correos,
         referencias_familiares: resto.referencias_familiares
       });
 

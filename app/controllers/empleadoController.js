@@ -28,7 +28,7 @@ const crearEmpleado = async (req, res) => {
         sexo,
         foto: resto.foto,
         contrasenia: contraseniaHasheada,  // Guardar la contraseña hasheada
-        rol: 1,  // Definir el rol como Administrador (1)
+        rol: 2,  // Definir el rol como Administrador (1)
         domicilio: resto.domicilio,
         departamento: resto.departamento,
         puesto: resto.puesto,

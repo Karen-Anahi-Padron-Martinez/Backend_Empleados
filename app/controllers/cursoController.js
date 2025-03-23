@@ -88,4 +88,22 @@ const obtenerCursosDeEmpleados = async (req, res) => {
   }
 };
 
-module.exports = { crearCurso,registrarCursos,obtenerCursosDeEmpleados};
+
+
+const getCursosPorEmpleado = async (req, res) => {
+  const { clave_empleado } = req.params;
+
+  try {
+    // Buscar cursos para el empleado
+    const cursos = await Curso.find({ clave_empleado });
+    if (!cursos.length) {
+      return res.status(404).json({ mensaje: 'No se encontraron cursos para este empleado' });
+    }
+    res.status(200).json(cursos); // Enviar los cursos encontrados
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener los cursos', error: error.message });
+  }
+};
+module.exports = { crearCurso,registrarCursos,obtenerCursosDeEmpleados, getCursosPorEmpleado};
+

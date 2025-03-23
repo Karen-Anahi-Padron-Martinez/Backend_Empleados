@@ -77,5 +77,29 @@ const obtenerEmpleadosConCursos = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener empleados y sus cursos', error });
     }
 };
+const obtenerActividadesEmpleado = async (req, res) => {
+    try {
+        const { clave_empleado } = req.params;
 
-module.exports = { registrarParticipaciones,obtenerEmpleadosConCursos};
+        // Verificar si se pasó la clave del empleado
+        if (!clave_empleado) {
+            return res.status(400).json({ message: "Se debe proporcionar la clave del empleado." });
+        }
+
+        // Buscar solo las actividades de ese empleado
+        const empleadoConCursos = await Participacion.findOne({ clave_empleado });
+
+        // Verificar si se encontraron actividades para el empleado
+        if (!empleadoConCursos || !empleadoConCursos.actividad || empleadoConCursos.actividad.length === 0) {
+            return res.status(404).json({ message: "El empleado no tiene actividades registradas." });
+        }
+
+        // Devolver las actividades del empleado
+        res.status(200).json({ actividades: empleadoConCursos.actividad });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener las actividades del empleado', error });
+    }
+};
+
+module.exports = { registrarParticipaciones,obtenerEmpleadosConCursos, obtenerActividadesEmpleado };

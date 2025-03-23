@@ -35,6 +35,7 @@ const login = async (req, res) => {
         nombre: empleado.nombre,
         apellido_paterno: empleado.apellido_paterno,
         rol: empleado.rol,
+        
       },
     });
   } catch (error) {

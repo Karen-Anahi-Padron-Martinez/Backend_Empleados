@@ -6,6 +6,10 @@ const cursoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  nombre_empleado: {
+    type: String,
+    required: true
+  },
   cursos: [
     {
       nombre_curso: {
